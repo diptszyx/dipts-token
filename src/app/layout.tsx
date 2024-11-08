@@ -19,7 +19,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "DiptsToken - Solana Blockchain Assets",
+  title: "DanielToken - Solana Blockchain Assets",
   description: "Create and manage tokens and NFTs on the Solana blockchain",
 };
 

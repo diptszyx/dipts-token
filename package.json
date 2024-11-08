@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.5",
     "@metaplex-foundation/digital-asset-standard-api": "^1.0.4",
     "@metaplex-foundation/mpl-bubblegum": "^4.2.1",
     "@metaplex-foundation/mpl-core": "^1.1.1",

@@ -6,7 +6,7 @@ const Footer: React.FC = () => {
     <footer className="bg-gray-800 text-white p-8">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
-          <h3 className="text-xl font-bold mb-4">DiptsToken</h3>
+          <h3 className="text-xl font-bold mb-4">DanielToken</h3>
           <p className="text-gray-400">Empowering the future of digital assets on the Solana blockchain.</p>
         </div>
         <div>
@@ -34,7 +34,7 @@ const Footer: React.FC = () => {
         </div>
       </div>
       <div className="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
-        <p>&copy; 2023 DiptsToken. All rights reserved.</p>
+        <p>&copy; 2024 DanielToken. All rights reserved.</p>
       </div>
     </footer>
   );

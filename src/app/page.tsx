@@ -9,7 +9,7 @@ export default function Home() {
           Personal Token Manager
         </h1>
         <p className="text-xl text-gray-600 dark:text-gray-400">
-          Quản lý tài sản số của bạn một cách dễ dàng trên Solana Blockchain
+          Manage your digital assets easily on the Solana Blockchain
         </p>
       </div>
 
@@ -27,7 +27,7 @@ export default function Home() {
           </div>
           <h2 className="text-2xl font-bold mb-3">Fungible Tokens</h2>
           <p className="text-gray-600 dark:text-gray-400">
-            Hỗ trợ cả Token-2022 và Original SPL Token standard
+            Supports both Token-2022 and Original SPL Token standard
           </p>
         </div>
 
@@ -43,7 +43,7 @@ export default function Home() {
           </div>
           <h2 className="text-2xl font-bold mb-3">NFT Collections</h2>
           <p className="text-gray-600 dark:text-gray-400">
-            Tạo và quản lý NFT với Metaplex và Bubblegum
+            Create and manage NFTs with Metaplex and Bubblegum
           </p>
         </div>
 
@@ -59,7 +59,7 @@ export default function Home() {
           </div>
           <h2 className="text-2xl font-bold mb-3">Solana Blockchain</h2>
           <p className="text-gray-600 dark:text-gray-400">
-            Xây dựng trên Solana để đảm bảo tốc độ và chi phí thấp
+            Built on Solana to ensure high speed and low costs
           </p>
         </div>
       </div>
@@ -76,10 +76,10 @@ export default function Home() {
             />
           </div>
           <div className="md:w-1/2">
-            <h2 className="text-3xl font-bold mb-4">Kết nối ví của bạn</h2>
+            <h2 className="text-3xl font-bold mb-4">Connect Your Wallet</h2>
             <p className="text-gray-600 dark:text-gray-400 text-lg">
-              Chỉ cần kết nối ví Solana của bạn để bắt đầu quản lý các token và NFT. 
-              Hỗ trợ đầy đủ các tính năng như tạo, chuyển và quản lý tài sản số.
+              Simply connect your Solana wallet to start managing your tokens and NFTs.
+              Full support for creating, transferring, and managing digital assets.
             </p>
           </div>
         </div>

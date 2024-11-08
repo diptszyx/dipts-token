@@ -15,7 +15,7 @@ const Header: React.FC = () => {
     <header className="bg-white text-black p-4 shadow-lg">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold hover:text-gray-600 transition-colors">
-          DiptsToken
+          DanielToken
         </Link>
         
         <nav className="flex-grow">
