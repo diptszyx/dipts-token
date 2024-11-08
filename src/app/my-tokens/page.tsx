@@ -85,7 +85,7 @@ export default function MyTokens() {
               if (asset.content?.json_uri) {
                 const response = await fetch(asset.content.json_uri);
                 metadata = await response.json();
-                image = metadata.image || '';
+                image = metadata?.image || '';
               }
             } catch (error) {
               console.warn('Error fetching metadata:', error);
