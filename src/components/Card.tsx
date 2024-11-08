@@ -3,17 +3,17 @@
 import Image from 'next/image';
 
 interface CardProps {
-  id?: string;
   name: string;
-  image: string;
+  image?: string;
   description?: string;
-  type?: string;
+  onClick?: () => void;
+  id?: string;
+  type?: 'NFT' | 'Token';
   amount?: number;
   decimals?: number;
-  onClick?: () => void;
 }
 
-export function Card({ id, name, image, description, type, amount, decimals, onClick }: CardProps) {
+export function Card({ name, image = '', description, onClick }: CardProps) {
   return (
     <div className="relative bg-white rounded-lg shadow-md overflow-hidden">
       <div onClick={onClick} className="cursor-pointer">
