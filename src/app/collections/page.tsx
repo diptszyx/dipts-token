@@ -63,9 +63,9 @@ export default function CollectionsPage() {
         );
 
         setCollections(formattedCollections);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('Error fetching collections:', err);
-        setError(err.message || 'Failed to fetch collections');
+        setError(err instanceof Error ? err.message : 'Failed to fetch collections');
       } finally {
         setLoading(false);
       }

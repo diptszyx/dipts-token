@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 
 interface CardProps {
   id: string;
@@ -18,10 +19,12 @@ export function Card({ id, name, image, description, type, amount, decimals, onC
       <div onClick={onClick} className="cursor-pointer">
         {image && (
           <div className="aspect-square">
-            <img
+            <Image
               src={image}
               alt={name}
               className="w-full h-full object-cover"
+              width={500}
+              height={500}
             />
           </div>
         )}
