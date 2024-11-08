@@ -1,7 +1,5 @@
 'use client';
 
-import Image from 'next/image';
-import { AssetMenu } from './AssetMenu';
 
 interface CardProps {
   id: string;
@@ -17,18 +15,6 @@ interface CardProps {
 export function Card({ id, name, image, description, type, amount, decimals, onClick }: CardProps) {
   return (
     <div className="relative bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="absolute top-2 right-2 z-10">
-        <AssetMenu 
-          type={type} 
-          asset={{
-            id,
-            name,
-            amount,
-            decimals
-          }} 
-        />
-      </div>
-
       <div onClick={onClick} className="cursor-pointer">
         {image && (
           <div className="aspect-square">
