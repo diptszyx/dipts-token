@@ -189,9 +189,12 @@ export default function CreateNFTPage() {
           setStatus('All NFTs created successfully!');
           toast.success(`Created ${nftQuantity} NFTs! 🎉`);
 
-        } catch (error: any) {
+        } catch (error: Error | unknown) {
           console.error('Error creating NFTs:', error);
-          throw new Error(`Failed to create NFTs: ${error.message}`);
+          const errorMessage = error instanceof Error 
+            ? error.message 
+            : 'Unknown error occurred';
+          throw new Error(`Failed to create NFTs: ${errorMessage}`);
         }
       } else {
         // 3. Create NFT based on selected program and standard
@@ -251,10 +254,13 @@ export default function CreateNFTPage() {
       }
 
       setStatus('NFT created successfully!');
-    } catch (error: any) {
+    } catch (error: Error | unknown) {
       console.error('Error:', error);
-      toast.error(error.message || 'Failed to create NFTs');
-      setStatus(`Error: ${error.message}`);
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : 'Failed to create NFTs';
+      toast.error(errorMessage);
+      setStatus(`Error: ${errorMessage}`);
     } finally {
       setIsCreating(false);
     }

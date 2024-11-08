@@ -15,6 +15,30 @@ interface AssetDisplay {
   type: 'NFT' | 'Token';
 }
 
+interface TokenInfo {
+  balance?: number;
+  decimals?: number;
+}
+
+interface Metadata {
+  name?: string;
+  image?: string;
+}
+
+interface AssetContent {
+  json_uri?: string;
+  metadata?: {
+    name?: string;
+  };
+}
+
+interface HeliusAsset {
+  id: string;
+  interface?: 'V1_NFT' | 'MplCoreAsset' | 'FungibleToken';
+  content?: AssetContent;
+  token_info?: TokenInfo;
+}
+
 export default function MyTokens() {
   const { publicKey: walletPublicKey } = useWallet();
   const [nfts, setNfts] = useState<AssetDisplay[]>([]);
@@ -53,9 +77,9 @@ export default function MyTokens() {
         console.log('Raw assets:', assets);
 
         const processedAssets = await Promise.all(
-          assets.map(async (asset: any) => {
+          assets.map(async (asset: HeliusAsset) => {
             let image = '';
-            let metadata = null;
+            let metadata: Metadata | null = null;
             
             try {
               if (asset.content?.json_uri) {
@@ -67,7 +91,7 @@ export default function MyTokens() {
               console.warn('Error fetching metadata:', error);
             }
 
-            if ( asset.interface === 'V1_NFT' || asset.interface === 'MplCoreAsset') {
+            if (asset.interface === 'V1_NFT' || asset.interface === 'MplCoreAsset') {
               return {
                 id: asset.id,
                 name: asset.content?.metadata?.name || 'Unnamed NFT',
@@ -80,12 +104,6 @@ export default function MyTokens() {
               const tokenInfo = asset.token_info;
               const rawBalance = tokenInfo?.balance || 0;
               const decimals = tokenInfo?.decimals || 0;
-              
-              console.log('Raw values:', {
-                rawBalance,
-                decimals,
-                tokenInfo
-              });
               
               const balance = rawBalance / Math.pow(10, decimals);
               

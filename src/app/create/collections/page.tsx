@@ -22,7 +22,7 @@ export default function CreateCollectionPage() {
   const [symbol, setSymbol] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState<File | null>(null);
-  // const [royaltyBasisPoints, setRoyaltyBasisPoints] = useState(0);
+  const [royaltyBasisPoints, setRoyaltyBasisPoints] = useState(500); // 5%
 
   const { uploadToIPFS } = useUploadToIPFS();
 
@@ -72,9 +72,13 @@ export default function CreateCollectionPage() {
 
       return collectionSigner.publicKey;
 
-    } catch (error: any) {
+    } catch (error: Error | unknown) {
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : 'Failed to create collection';
+      
       console.error('Error:', error);
-      toast.error(error.message || 'Failed to create collection', {
+      toast.error(errorMessage, {
         autoClose: 1000
       });
     } finally {

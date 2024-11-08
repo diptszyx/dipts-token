@@ -14,16 +14,40 @@ import { Token2022Options } from '@/components/Token2022Options';
 import { mplToolbox } from '@metaplex-foundation/mpl-toolbox';
 import { toast } from 'react-toastify';
 
+// Định nghĩa interface cho metadata cơ bản
+interface BaseTokenMetadata {
+  name: string;
+  symbol: string;
+  description: string;
+  decimals: number;
+  amount: number;
+}
+
+// Định nghĩa interface cho các tùy chọn Token2022
+interface Token2022Options {
+  transferFeeEnabled: boolean;
+  transferFeeBasisPoints: number;
+  transferFeeReceiver: string;
+  nonTransferable: boolean;
+  requireMemo: boolean;
+}
+
+// Kết hợp cả hai để tạo TokenMetadata
+type TokenMetadata = BaseTokenMetadata & Partial<Token2022Options>;
+
+// Định nghĩa interface cho params của createToken
+interface CreateTokenParams {
+  standard: 'original' | 'token2022';
+  metadata: TokenMetadata;
+  image: File;
+}
+
 // Tách logic xử lý token creation ra thành custom hook
 function useTokenCreation() {
   const wallet = useWallet();
   const { uploadToIPFS } = useUploadToIPFS();
 
-  const createToken = async (params: {
-    standard: 'original' | 'token2022';
-    metadata: any; // Assuming TokenMetadata and Token2022Metadata are not defined in the current context
-    image: File;
-  }) => {
+  const createToken = async (params: CreateTokenParams) => {
     if (!wallet.publicKey) {
       throw new Error('Wallet not connected');
     }
@@ -140,9 +164,13 @@ export default function CreateFungibleTokenPage() {
 
       toast.success('Token created successfully! 🎉');
       clearForm();
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error:', error);
-      toast.error(error.message || 'Failed to create token');
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error('Failed to create token');
+      }
     } finally {
       setIsLoading(false);
     }

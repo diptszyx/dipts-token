@@ -38,8 +38,9 @@ export function useUploadToIPFS() {
 
       const result = await response.json();
       return result;
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: Error | unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
+      setError(errorMessage);
       return null;
     } finally {
       setIsUploading(false);

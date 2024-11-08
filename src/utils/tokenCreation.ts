@@ -87,8 +87,9 @@ export async function createOriginalToken(umi: Umi, metadata: TokenMetadata) {
     }).sendAndConfirm(umi);
 
     return mint.publicKey.toString();
-  } catch (error: any) {
-    throw new TokenCreationError(`Failed to create original token: ${error.message}`);
+  } catch (error: Error | unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    throw new TokenCreationError(`Failed to create original token: ${errorMessage}`);
   }
 }
 
@@ -126,7 +127,8 @@ export async function createToken2022(umi: Umi, metadata: Token2022Metadata) {
     }).sendAndConfirm(umi);
 
     return mint.publicKey.toString();
-  } catch (error: any) {
-    throw new TokenCreationError(`Failed to create Token-2022: ${error.message}`);
+  } catch (error: Error | unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    throw new TokenCreationError(`Failed to create Token-2022: ${errorMessage}`);
   }
 }
