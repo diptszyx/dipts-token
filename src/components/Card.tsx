@@ -3,11 +3,11 @@
 import Image from 'next/image';
 
 interface CardProps {
-  id: string;
+  id?: string;
   name: string;
-  image?: string;
+  image: string;
   description?: string;
-  type: 'NFT' | 'Token';
+  type?: string;
   amount?: number;
   decimals?: number;
   onClick?: () => void;

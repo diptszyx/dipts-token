@@ -7,7 +7,7 @@ import { clusterApiUrl } from '@solana/web3.js'
 import { ReactNode, useMemo } from 'react'
 import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets'
 
-require('@solana/wallet-adapter-react-ui/styles.css')
+import '@solana/wallet-adapter-react-ui/styles.css'
 
 export default function WalletProviderComponent({ children }: { children: ReactNode }) {
   const network = WalletAdapterNetwork.Devnet

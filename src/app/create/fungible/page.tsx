@@ -132,7 +132,7 @@ export default function CreateFungibleTokenPage() {
         })
       };
 
-      const tokenAddress = await createToken({
+      await createToken({
         standard: selectedStandard,
         metadata,
         image: tokenImage

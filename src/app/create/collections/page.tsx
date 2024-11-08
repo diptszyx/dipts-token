@@ -22,7 +22,7 @@ export default function CreateCollectionPage() {
   const [symbol, setSymbol] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState<File | null>(null);
-  const [royaltyBasisPoints, setRoyaltyBasisPoints] = useState(500); // 5%
+  // const [royaltyBasisPoints, setRoyaltyBasisPoints] = useState(0);
 
   const { uploadToIPFS } = useUploadToIPFS();
 
