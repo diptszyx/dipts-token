@@ -134,8 +134,11 @@ export default function CreateNFTPage() {
       if (selectedProgram === 'compressed') {
         try {
           // 1. Tạo Merkle Tree
+          console.log('Starting tree creation...');
           setStatus('Creating merkle tree...');
           const merkleTree = generateSigner(umi);
+          
+          console.log('Tree public key:', merkleTree.publicKey.toString());
           
           const builder = await createTree(umi, {
             merkleTree,
@@ -144,10 +147,27 @@ export default function CreateNFTPage() {
             public: true,
           });
 
-          await builder.sendAndConfirm(umi);
+          console.log('Sending tree creation transaction...');
+          const { signature } = await builder.sendAndConfirm(umi);
+          console.log('Tree creation signature:', signature);
 
-          // 2. Mint cNFTs in batches
-          setStatus(`Preparing to mint ${nftQuantity} NFTs...`);
+          // Đợi transaction được xác nhận
+          console.log('Waiting for tree creation confirmation...');
+          setStatus('Waiting for tree creation confirmation...');
+          await umi.rpc.confirmTransaction(signature, {
+            strategy: { 
+              type: 'blockhash',
+              ...(await umi.rpc.getLatestBlockhash()),
+            },
+          });
+          console.log('Tree creation confirmed!');
+
+          // Thêm delay ngắn để đảm bảo
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          console.log('Starting NFT minting process...');
+
+          // 2. Mint cNFTs
+          setStatus(`Preparing to mint ${nftQuantity} NFTs to tree ${merkleTree.publicKey.toString()}...`);
           
           // Chia thành các batch nhỏ, mỗi batch 5 NFT
           const BATCH_SIZE = 5;

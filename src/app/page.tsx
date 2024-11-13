@@ -19,7 +19,7 @@ export default function Home() {
         <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-8 rounded-2xl border border-gray-200 dark:border-gray-700 text-center">
           <div className="mb-6 relative w-32 h-32 mx-auto">
             <Image
-              src="/images/token-illustration.png"
+              src="/images/img1.png"
               alt="Token Feature"
               fill
               className="object-contain"
@@ -35,7 +35,7 @@ export default function Home() {
         <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-8 rounded-2xl border border-gray-200 dark:border-gray-700 text-center">
           <div className="mb-6 relative w-32 h-32 mx-auto">
             <Image
-              src="/images/nft-illustration.png"
+              src="/images/img2.png"
               alt="NFT Feature"
               fill
               className="object-contain"
@@ -51,7 +51,7 @@ export default function Home() {
         <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-8 rounded-2xl border border-gray-200 dark:border-gray-700 text-center">
           <div className="mb-6 relative w-32 h-32 mx-auto">
             <Image
-              src="/images/blockchain-illustration.png"
+              src="/images/img3.png"
               alt="Blockchain Feature"
               fill
               className="object-contain"
@@ -69,7 +69,7 @@ export default function Home() {
         <div className="flex flex-col md:flex-row items-center gap-8">
           <div className="relative w-full md:w-1/2 h-64">
             <Image
-              src="/images/wallet-illustration.png"
+              src="/images/img4.png"
               alt="Wallet Connection"
               fill
               className="object-contain"

@@ -7,7 +7,8 @@ import { getCollectionV1GpaBuilder, mplCore } from '@metaplex-foundation/mpl-cor
 import { walletAdapterIdentity } from '@metaplex-foundation/umi-signer-wallet-adapters';
 import Link from 'next/link';
 import { publicKey } from '@metaplex-foundation/umi';
-import { Card } from '@/components/Card';
+import { CollectionCard } from '@/components/CollectionCard';
+import { useRouter } from 'next/navigation';
 
 interface Collection {
   id: string;
@@ -15,6 +16,8 @@ interface Collection {
   symbol: string;
   image: string;
   description?: string;
+  currentSize: number;
+  numMinted: number;
 }
 
 export default function CollectionsPage() {
@@ -22,6 +25,7 @@ export default function CollectionsPage() {
   const [collections, setCollections] = useState<Collection[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchCollections = async () => {
@@ -57,7 +61,9 @@ export default function CollectionsPage() {
               name: collection.name,
               symbol: '',
               image: image,
-              description: `Minted: ${collection.numMinted}, Size: ${collection.currentSize}`
+              currentSize: collection.currentSize,
+              numMinted: collection.numMinted,
+              description: ''
             };
           })
         );
@@ -106,16 +112,15 @@ export default function CollectionsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {collections.map((collection) => (
-            <Card
+            <CollectionCard
               key={collection.id}
-              id={collection.id}
               name={collection.name}
               image={collection.image}
               description={collection.description}
-              type="NFT"
-              onClick={() => {
-                console.log('Clicked collection:', collection.id);
-              }}
+              currentSize={collection.currentSize}
+              numMinted={collection.numMinted}
+              publicKey={collection.id}
+              onClick={() => router.push(`/collections/${collection.id}`)}
             />
           ))}
         </div>

@@ -29,6 +29,38 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## Tools & Frameworks
+
+### Frontend
+- **Next.js 15** - Modern React framework for web applications
+- **React 18** - JavaScript library for building user interfaces
+- **TypeScript** - Typed programming language built on JavaScript
+- **Tailwind CSS** - Utility-first CSS framework
+
+### Blockchain & Web3
+- **Solana Web3.js** - Library for interacting with Solana blockchain
+- **Metaplex Foundation Libraries**:
+  - Digital Asset Standard API
+  - MPL Bubblegum
+  - MPL Token Metadata
+  - MPL Toolbox
+  - UMI Bundle
+- **Solana Wallet Adapter** - Wallet integration for Solana
+- **SPL Token** - Solana Program Library for token management
+
+### Development Tools
+- **ESLint** - Linting utility for JavaScript/TypeScript
+- **TypeScript** - Development and type checking
+- **Axios** - Promise-based HTTP client
+- **React Toastify** - Toast notifications for React
+- **Heroicons** - Beautiful hand-crafted SVG icons
+
+### Development Environment
+- **Node.js** - JavaScript runtime environment
+- **npm** - Package manager for Node.js
+
+This project is a web3 application built on the Solana blockchain, utilizing Next.js as the primary frontend framework and integrating various Metaplex Foundation libraries for handling NFTs and digital assets.
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.

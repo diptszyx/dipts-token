@@ -7,36 +7,91 @@ import { Card } from '@/components/Card';
 const rpcUrl = `https://devnet.helius-rpc.com/?api-key=${process.env.HELIUS_API_KEY}`;
 
 interface AssetDisplay {
-  id: string;
+  tokenAccountAddress?: string;
   name: string;
   image?: string;
   amount?: number;
   decimals?: number;
   type: 'NFT' | 'Token';
+  mintAddress: string;
+  nftType?: 'core' | 'compressed' | 'metadata';
+  compressed?: boolean;
+  burnt?: boolean;
+  description?: string;
+  symbol?: string;
 }
 
 interface TokenInfo {
   balance?: number;
   decimals?: number;
-}
-
-interface Metadata {
-  name?: string;
-  image?: string;
+  associated_token_address?: string;
+  token_program?: string;
 }
 
 interface AssetContent {
   json_uri?: string;
   metadata?: {
     name?: string;
+    symbol?: string;
+    description?: string;
   };
 }
 
 interface HeliusAsset {
   id: string;
-  interface?: 'V1_NFT' | 'MplCoreAsset' | 'FungibleToken';
+  interface?: 'V1_NFT' | 'MplCoreAsset' | 'FungibleToken' | 'MplCoreCollection';
   content?: AssetContent;
   token_info?: TokenInfo;
+  compression?: {
+    eligible: boolean;
+    compressed: boolean;
+    data_hash: string;
+    creator_hash: string;
+    asset_hash: string;
+  };
+  burnt?: boolean;
+  authorities?: Array<any>;
+  ownership?: {
+    frozen: boolean;
+    delegated: boolean;
+    delegate: string | null;
+    ownership_model: string;
+    owner: string;
+  };
+  royalty?: {
+    royalty_model: string;
+    target: any;
+    percent: number;
+    basis_points: number;
+    primary_sale_happened: boolean;
+  };
+  supply?: {
+    print_max_supply: number;
+    print_current_supply: number;
+    edition_nonce: number;
+  };
+  mutable?: boolean;
+  grouping?: Array<{
+    group_key: string;
+    group_value: string;
+  }>;
+}
+
+interface Metadata {
+  name?: string;
+  image?: string;
+  description?: string;
+  attributes?: Array<{
+    trait_type: string;
+    value: string | number;
+  }>;
+  properties?: {
+    files?: Array<{
+      uri: string;
+      type: string;
+    }>;
+    category?: string;
+  };
 }
 
 export default function MyTokens() {
@@ -77,49 +132,68 @@ export default function MyTokens() {
         console.log('Raw assets:', assets);
 
         const processedAssets = await Promise.all(
-          assets.map(async (asset: HeliusAsset) => {
-            let image = '';
-            let metadata: Metadata | null = null;
-            
-            try {
-              if (asset.content?.json_uri) {
-                const response = await fetch(asset.content.json_uri);
-                metadata = await response.json();
-                image = metadata?.image || '';
+          assets
+            .filter((asset: HeliusAsset) => {
+              if (asset.burnt) return false;
+              
+              if (asset.grouping?.some(g => g.group_key === 'collection')) return false;
+              
+              if (asset.interface === 'MplCoreCollection') return false;
+              
+              return (
+                asset.interface === 'V1_NFT' || 
+                asset.interface === 'FungibleToken' ||
+                (asset.interface === 'MplCoreAsset' && (!asset.grouping || asset.grouping.length === 0))
+              );
+            })
+            .map(async (asset: HeliusAsset) => {
+              let image = '';
+              let metadata: Metadata | null = null;
+              
+              try {
+                if (asset.content?.json_uri) {
+                  const response = await fetch(asset.content.json_uri);
+                  metadata = await response.json();
+                  image = metadata?.image || '';
+                }
+              } catch (error) {
+                console.warn('Error fetching metadata:', error);
               }
-            } catch (error) {
-              console.warn('Error fetching metadata:', error);
-            }
 
-            if (asset.interface === 'V1_NFT' || asset.interface === 'MplCoreAsset') {
-              return {
-                id: asset.id,
-                name: asset.content?.metadata?.name || 'Unnamed NFT',
-                image: image,
-                type: 'NFT' as const
-              };
-            }
-
-            if (asset.interface === 'FungibleToken') {
-              const tokenInfo = asset.token_info;
-              const rawBalance = tokenInfo?.balance || 0;
-              const decimals = tokenInfo?.decimals || 0;
-              
-              const balance = rawBalance / Math.pow(10, decimals);
-              
-              return {
-                id: asset.id,
-                name: asset.content?.metadata?.name || 'Unnamed Token',
-                image: image,
-                amount: balance,
-                decimals: decimals,
-                type: 'Token' as const
-              };
-            }
-          })
+              if (asset.interface === 'V1_NFT' || asset.interface === 'MplCoreAsset') {
+                return {
+                  tokenAccountAddress: asset.token_info?.associated_token_address,
+                  name: asset.content?.metadata?.name || 'Unnamed NFT',
+                  image: image,
+                  type: 'NFT' as const,
+                  nftType: asset.compression?.compressed ? 'compressed' : 'metadata',
+                  compressed: asset.compression?.compressed || false,
+                  mintAddress: asset.id,
+                  description: metadata?.description || '',
+                  symbol: asset.content?.metadata?.symbol || ''
+                };
+              } else if (asset.interface === 'FungibleToken') {
+                const tokenInfo = asset.token_info;
+                const rawBalance = tokenInfo?.balance || 0;
+                const decimals = tokenInfo?.decimals || 0;
+                
+                const balance = rawBalance / Math.pow(10, decimals);
+                
+                return {
+                  tokenAccountAddress: asset.token_info?.associated_token_address,
+                  name: asset.content?.metadata?.name || 'Unnamed Token',
+                  image: image,
+                  amount: balance,
+                  decimals: decimals,
+                  type: 'Token' as const,
+                  mintAddress: asset.id,
+                  description: metadata?.description || asset.content?.metadata?.description || '',
+                  symbol: asset.content?.metadata?.symbol || ''
+                };
+              }
+            })
         );
 
-        // Phân loại assets
         const nftAssets = processedAssets.filter(asset => asset?.type === 'NFT');
         const tokenAssets = processedAssets.filter(asset => asset?.type === 'Token');
 
@@ -164,14 +238,15 @@ export default function MyTokens() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {nfts.map((nft) => (
               <Card
-                key={nft.id}
-                id={nft.id}
+                key={nft.mintAddress}
+                tokenAccountAddress={nft.tokenAccountAddress}
+                mintAddress={nft.mintAddress}
                 name={nft.name}
                 image={nft.image}
+                description={nft.description}
+                symbol={nft.symbol}
                 type="NFT"
-                onClick={() => {
-                  console.log('Clicked NFT:', nft.id);
-                }}
+                nftType={nft.nftType}
               />
             ))}
           </div>
@@ -189,17 +264,16 @@ export default function MyTokens() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {tokens.map((token) => (
               <Card
-                key={token.id}
-                id={token.id}
-                name={token.name}
+                key={token.mintAddress}
+                tokenAccountAddress={token.tokenAccountAddress}
+                mintAddress={token.mintAddress}
+                name={`${token.name}`}
                 image={token.image}
-                description={`Balance: ${token.amount}`}
+                description={token.description}
+                symbol={token.symbol}
                 type="Token"
                 amount={token.amount}
                 decimals={token.decimals}
-                onClick={() => {
-                  console.log('Clicked token:', token.id);
-                }}
               />
             ))}
           </div>
