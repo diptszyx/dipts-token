@@ -16,7 +16,6 @@ export function CollectionCard({
   description,
   currentSize,
   numMinted,
-  publicKey,
   onClick
 }: CollectionCardProps) {
   return (

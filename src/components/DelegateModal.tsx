@@ -15,7 +15,6 @@ export function DelegateModal({
   onDelegate, 
   maxAmount, 
   tokenSymbol,
-  isLoading = false 
 }: DelegateModalProps) {
   const [delegateAddress, setDelegateAddress] = useState('');
   const [amount, setAmount] = useState('');

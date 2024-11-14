@@ -50,7 +50,7 @@ interface HeliusAsset {
     asset_hash: string;
   };
   burnt?: boolean;
-  authorities?: Array<any>;
+  authorities?: Array<string>;
   ownership?: {
     frozen: boolean;
     delegated: boolean;
@@ -60,7 +60,7 @@ interface HeliusAsset {
   };
   royalty?: {
     royalty_model: string;
-    target: any;
+    target: string;
     percent: number;
     basis_points: number;
     primary_sale_happened: boolean;

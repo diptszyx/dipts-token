@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { XMarkIcon } from '@heroicons/react/24/solid';
 
 interface TokenDetailModalProps {
   isOpen: boolean;
